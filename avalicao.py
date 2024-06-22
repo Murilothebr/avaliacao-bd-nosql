@@ -127,9 +127,24 @@ def formatar_moeda(valor):
 
 dados = pd.read_csv('vendas.csv')
 
+sum_quantidade_total = dados['Valor_Venda'].sum()
+
 quantidade_10 = dados.where(dados['Valor_Venda'] < 1000).dropna()
 quantidade_15 = dados.where(dados['Valor_Venda'] > 1000).dropna()
 
+sum_quantidade_10 = quantidade_10['Valor_Venda'].sum()
+sum_quantidade_15 = quantidade_15['Valor_Venda'].sum()
 
+quantidade_10_com_desconto = sum_quantidade_10 * 0.9
+quantidade_15_com_desconto = sum_quantidade_15 * 0.85
+
+quantidade_com_descontos = quantidade_10_com_desconto + quantidade_15_com_desconto
+
+porcentagem_perda_faturamento = ( sum_quantidade_total - quantidade_com_descontos ) / sum_quantidade_total * 100
+
+print(f"quantidade total = {formatar_moeda(sum_quantidade_total)}")
+print(f"quantidade com descontos = {formatar_moeda(quantidade_com_descontos)}")
+print(f"porcentagem perda de faturamento = {porcentagem_perda_faturamento}")
+print(f"porcentagem perda de faturamento arredondando = {porcentagem_perda_faturamento:0.2f}") 
 
 #endregion
